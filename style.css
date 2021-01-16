@@ -1,1 +1,33 @@
+body {
+  text-align: center;
+}
 
+.title-container,
+.container,
+.footer {
+  border: solid;
+  width: auto;
+}
+
+form {
+  display: inline-block;
+  align-items: center;
+}
+fieldset {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  text-align: center;
+  align-items: center;
+}
+
+input {
+  text-align: center;
+}
+.hide {
+  display: none;
+}
+
+.selection-container {
+  display: inline;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library App</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="title-container">
+      <h1>Library App</h1>
+      <h2>Add a book</h2>
+    </div>
+    <div class="container">
+      <div class="form-container">
+        <form>
+          <fieldset>
+            <legend>Create Submission</legend>
+            <label for="title"></label>
+            <input type="text" name="title" id="title" placeholder="title" />
+            <label for="author"></label>
+            <input
+              type="text"
+              name="author"
+              id="author"
+              placeholder="author (optional)"
+            />
+            <label for="pages"></label>
+            <input
+              type="text"
+              name="pages"
+              id="pages"
+              placeholder="# pages (optional)"
+            />
+            <label for="read">Read?</label>
+            <div>
+              <div class="selection-container">
+                <span>Yes</span>
+                <input type="radio" name="read" id="read" value="true" />
+              </div>
+              <div class="selection-container">
+                <span>No</span>
+                <input
+                  type="radio"
+                  name="read"
+                  id="not-read"
+                  value="false"
+                  checked
+                />
+              </div>
+            </div>
+            <button type="submit">Submit</button>
+          </fieldset>
+        </form>
+      </div>
+      <div class="window-container"></div>
+    </div>
+    <div class="footer"></div>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
