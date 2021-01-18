@@ -8,12 +8,17 @@
   </head>
   <body>
     <div class="title-container">
-      <h1>Library App</h1>
-      <h2>Add a book</h2>
+      <h1 class="title">Library App</h1>
+      <div class="storage-option-container">
+        <button class="storage-option button" id="local-storage">
+          Local Storage
+        </button>
+        <button class="storage-option button" id="firebase">Firebase</button>
+      </div>
     </div>
     <div class="container">
       <div class="form-container">
-        <form>
+        <form class="form">
           <fieldset>
             <legend>Create Submission</legend>
             <label for="title"></label>
@@ -49,11 +54,19 @@
                 />
               </div>
             </div>
-            <button type="submit">Submit</button>
+            <button type="button" class="submit">Submit</button>
           </fieldset>
+          <p class="message-box"></p>
         </form>
       </div>
-      <div class="window-container"></div>
+      <div class="window-container">
+        <div class="template-card">
+          <p>Harry Potter</p>
+          <div class="image-container"></div>
+          <p>JK Rowling</p>
+          <p>557 Pages</p>
+        </div>
+      </div>
     </div>
     <div class="footer"></div>
     <script src="./js/main.js"></script>
