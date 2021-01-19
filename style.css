@@ -1,5 +1,15 @@
+/* Site colors:
+
+Background: #EEE2DC
+Buttons: #EDC7B7
+Text: #AC3B61 and #123C69
+Title? #BAB2B5
+*/
+
 body {
   font-size: 1.1em;
+  background: #eee2dc;
+  text-decoration-color: #123c69;
 }
 
 input {
@@ -8,10 +18,24 @@ input {
   font-size: x-large;
   padding: 5px;
   margin: 2px;
+  background: #eee2dc;
+}
+
+h1,
+h3,
+p {
+  color: #123c69;
+}
+
+.header-title {
+  margin-left: 5px;
+}
+
+input:focus {
+  background: #bab2b5;
 }
 
 .container,
-.window-container,
 .footer {
   border: solid;
   width: auto;
@@ -21,7 +45,6 @@ input {
   display: inline-block;
 }
 
-.window-container,
 .title-container {
   display: flex;
   position: relative;
@@ -58,7 +81,7 @@ input {
   display: inline;
 }
 
-button {
+.button {
   width: 140px;
   height: 50px;
   text-align: center;
@@ -66,6 +89,7 @@ button {
   font-size: 1.1em;
   border-radius: 5%;
   margin: 6px;
+  background: #edc7b7;
 }
 
 .storage-option {
@@ -73,11 +97,96 @@ button {
   float: right;
 }
 
-.storage-option:hover {
+.button:hover {
   background-color: antiquewhite;
 }
 
 .storage-option-container {
   position: absolute;
   right: 5px;
+}
+
+/* Library Display Card */
+
+img {
+  max-width: 90px;
+  margin: 10px;
+  border: solid;
+  border-radius: 5px;
+  align-self: center;
+}
+
+.pic-container {
+  display: flex;
+  flex-direction: column;
+  float: right;
+}
+
+.read-status,
+.dot {
+  margin: 5px 10px 5px 10px;
+  display: flex;
+}
+
+.dot {
+  border-radius: 100%;
+  width: 17px;
+  height: 17px;
+  background-color: #ac3b61;
+}
+
+.title {
+  margin: 5px 5px 3px 5px;
+}
+
+.author,
+.pages {
+  margin: 0px 5px;
+  display: block;
+  text-align: right;
+}
+
+.button-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  right: 10px;
+}
+
+.author::before {
+  content: "- ";
+}
+
+.card-title-container {
+  border: solid yellow;
+  margin: 5px 0px 0px 5px;
+  min-width: 60%;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.card {
+  border: solid;
+  border-radius: 20px;
+  height: 120px;
+  max-width: 800px;
+  margin: 6px;
+}
+
+.status {
+  margin: 8px 0px 0px 5px;
+  border: solid;
+  border-radius: 5px;
+  display: inline-flex;
+  justify-content: space-between;
+  vertical-align: top;
+  min-width: 80px;
+}
+
+.read-status::after {
+  content: "Read";
+}
+
+.read {
+  background-color: green;
 }

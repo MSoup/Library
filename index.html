@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="title-container">
-      <h1 class="title">Library App</h1>
+      <h1 class="header-title">Library App</h1>
       <div class="storage-option-container">
         <button class="storage-option button" id="local-storage">
           Local Storage
@@ -18,9 +18,9 @@
     </div>
     <div class="container">
       <div class="form-container">
-        <form class="form">
+        <form class="form" autocomplete="off">
           <fieldset>
-            <legend>Create Submission</legend>
+            <legend>Add Book</legend>
             <label for="title"></label>
             <input type="text" name="title" id="title" placeholder="title" />
             <label for="author"></label>
@@ -54,20 +54,34 @@
                 />
               </div>
             </div>
-            <button type="button" class="submit">Submit</button>
+            <button type="button" class="button">Submit</button>
           </fieldset>
           <p class="message-box"></p>
         </form>
       </div>
-      <div class="window-container">
-        <div class="template-card">
-          <p>Harry Potter</p>
-          <div class="image-container"></div>
-          <p>JK Rowling</p>
-          <p>557 Pages</p>
+
+      <div class="library-display-container">
+        <div class="card">
+          <div class="card-title-container">
+            <h3 class="title">INSERT POTENTIALLY LONG TITLE HERE</h3>
+            <p class="author">Author Name</p>
+            <p class="pages"># pages</p>
+      
+          </div>
+          <div class="status">
+            <p class="read-status"></p>
+            <div class="dot"></div>
+          </div>
+          <div class="pic-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Stray_kitten_Rambo002.jpg/1200px-Stray_kitten_Rambo002.jpg" alt="" class="pic">
+            <div class="button-container">
+            <button class="test1">Edit</button>
+            <button class="test2">X</button>
+              </div>
+          </div>
         </div>
       </div>
-    </div>
+      
     <div class="footer"></div>
     <script src="./js/main.js"></script>
   </body>
