@@ -28,12 +28,20 @@ p {
   color: #123c69;
 }
 
+.cat-photo {
+  position: fixed;
+  right: 0px;
+  top: 110px;
+  border: none;
+}
+
 .header-title {
   margin-left: 5px;
 }
 
-input:focus {
-  background: #bab2b5;
+input:focus,
+input:hover {
+  background: #edc7b7;
 }
 
 .container {
@@ -48,6 +56,7 @@ input:focus {
 
 .title-container {
   display: flex;
+  justify-content: space-between;
   position: relative;
   align-items: center;
   border: solid;
@@ -62,7 +71,13 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* display: none; */
+  flex: 1 0 auto;
+}
+
+.form {
+  border-radius: 8px;
+  box-shadow: 0 8px 12px 1px rgba(29, 17, 51, 0.04),
+    0 3px 16px 2px rgba(9, 32, 77, 0.12), 0 5px 10px -3px rgba(29, 17, 51, 0.12);
 }
 
 fieldset {
@@ -87,14 +102,17 @@ input {
 }
 
 .button {
-  width: 140px;
-  height: 50px;
+  flex: 1 1 0px;
   text-align: center;
   line-height: 1.1em;
   font-size: 1.1em;
   border-radius: 5%;
   margin: 6px;
   background: #edc7b7;
+}
+
+.storage-option-container {
+  display: flex;
 }
 
 .storage-option {
@@ -106,14 +124,11 @@ input {
   background-color: antiquewhite;
 }
 
-.storage-option-container {
-  position: absolute;
-  right: 5px;
-}
-
 /* Library Display Card */
 
 img {
+  max-width: 100%;
+  max-height: 100%;
   max-width: 90px;
   margin: 10px;
   border: solid;
@@ -121,10 +136,14 @@ img {
   align-self: center;
 }
 
+img {
+}
+
 .pic-container {
   display: flex;
   flex-direction: column;
-  float: right;
+  justify-content: center;
+  margin-right: 5px;
 }
 
 .read-status,
@@ -138,6 +157,7 @@ img {
   width: 17px;
   height: 17px;
   background-color: #ac3b61;
+  flex-shrink: 0;
 }
 
 .title {
@@ -154,8 +174,7 @@ img {
 .button-container {
   position: relative;
   display: flex;
-  justify-content: flex-end;
-  right: 10px;
+  justify-content: center;
 }
 
 .hidden {
@@ -181,21 +200,32 @@ img {
 }
 .card {
   border: solid;
+  display: flex;
+  justify-content: space-between;
   border-radius: 20px;
   height: 120px;
   margin: 6px;
   background: #bab2b5;
-  box-shadow: 5px 7px 15px #edc7b7;
+  /* box-shadow: 5px 7px 15px #edc7b7; */
+  box-shadow: 0 8px 12px 1px rgba(29, 17, 51, 0.04),
+    0 3px 16px 2px rgba(9, 32, 77, 0.12), 0 5px 10px -3px rgba(29, 17, 51, 0.12);
 }
 
+.card-button {
+  width: 25px;
+  margin: 0px;
+}
+
+.card-pic {
+  margin: 0px;
+}
 .status {
   margin: 8px 0px 0px 5px;
   border: solid;
   border-radius: 5px;
   display: inline-flex;
-  justify-content: space-between;
-  vertical-align: top;
   min-width: 80px;
+  align-self: flex-start;
 }
 .status:hover {
   background-color: antiquewhite;
@@ -215,14 +245,11 @@ body {
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
-}
-
-.form-container {
-  flex: 1 0 auto;
+  color: #ac3b61;
 }
 
 footer {
-  background-color: #edc7b7;
+  background-color: #ac3b61;
   color: #bbb;
   border: #123c69;
 }
@@ -236,7 +263,7 @@ body > .container {
   width: 100%;
 }
 
-@media only screen and (max-width: 620px) {
+@media only screen and (max-width: 635px) {
   body {
     background-color: lightblue;
   }
@@ -244,10 +271,14 @@ body > .container {
   img {
     display: none;
   }
+}
 
-  .pic-container {
-    position: relative;
-    bottom: 30%;
+@media only screen and (max-width: 530px) {
+  .read-status {
+    display: none;
+  }
+  .status {
+    justify-content: center;
   }
 }
 
@@ -260,5 +291,9 @@ body > .container {
 
   .storage-option-container {
     position: sticky;
+  }
+
+  h1 {
+    margin-bottom: 5px;
   }
 }

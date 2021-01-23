@@ -44,7 +44,7 @@ function submitHandler(event) {
   Library.addBook(book);
 
   displayMessage("Added: " + book.title);
-  clearForm();
+  // clearForm();
 }
 
 function displayMessage(msg, err = false) {

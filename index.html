@@ -15,6 +15,7 @@
     <div class="title-container">
       <h1 class="header-title">Library App</h1>
       <div class="storage-option-container">
+        <button class="help button">Help</button>
         <button class="storage-option button" id="local-storage">
           Local Storage
         </button>
@@ -23,7 +24,8 @@
     </div>
     <div class="container">
       <div class="form-container">
-        <form class="form" autocomplete="off">
+        <img class="cat-photo" src="./assets/cat.svg" alt="cat logo" />
+        <form class="form" autocomplete="off" onsubmit="return false">
           <fieldset>
             <legend>Add Book</legend>
             <label for="title"></label>
@@ -59,7 +61,7 @@
                 />
               </div>
             </div>
-            <button type="button" class="button">Submit</button>
+            <input class="button" type="submit" hidden />
           </fieldset>
         </form>
       </div>
@@ -80,12 +82,11 @@
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Stray_kitten_Rambo002.jpg/1200px-Stray_kitten_Rambo002.jpg"
               alt=""
-              class="pic"
+              class="card-pic"
             />
             <div class="button-container">
-              <button class="test">Clone</button>
-              <button class="test1">Edit</button>
-              <button class="test2">X</button>
+              <img src="./assets/edit.svg" alt="edit" class="card-button" />
+              <img src="./assets/remove.svg" alt="remove" class="card-button" />
             </div>
           </div>
         </div>
