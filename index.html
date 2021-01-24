@@ -12,16 +12,21 @@
     />
   </head>
   <body>
-    <div class="title-container">
-      <h1 class="header-title">Library App</h1>
-      <div class="storage-option-container">
-        <button class="help button">Help</button>
-        <button class="storage-option button" id="local-storage">
-          Local Storage
+    <div class="navbar">
+      <h2>Library App</h2>
+      <div class="dropdown">
+        <button class="dropbtn">
+          <h2>Menu</h2>
+          <i class="fa fa-caret-down"></i>
         </button>
-        <button class="storage-option button" id="firebase">Firebase</button>
+        <div class="dropdown-content">
+          <a class="usage" href="#">Usage</a>
+          <a class="local-storage" href="#">Local Storage</a>
+          <a class="firebase" href="#">Firebase</a>
+        </div>
       </div>
     </div>
+
     <div class="container">
       <div class="form-container">
         <img class="cat-photo" src="./assets/cat.svg" alt="cat logo" />
@@ -85,8 +90,16 @@
               class="card-pic"
             />
             <div class="button-container">
-              <img src="./assets/edit.svg" alt="edit" class="card-button" />
-              <img src="./assets/remove.svg" alt="remove" class="card-button" />
+              <img
+                src="./assets/edit.svg"
+                alt="edit"
+                class="card-button edit"
+              />
+              <img
+                src="./assets/remove.svg"
+                alt="remove"
+                class="card-button remove"
+              />
             </div>
           </div>
         </div>

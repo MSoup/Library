@@ -65,9 +65,9 @@ function clearForm() {
 // factory function Library -> lets me call addBook and removeBook as of now
 const Library = (function () {
   let myModule = {};
-  // books is a nodeList
+  // books is a nodeList, bookList is a list
   let books = libraryDisplayContainer;
-
+  let bookList = [];
   // methods
   myModule.addBook = function (bookObj) {
     // make DOM object from bookObj
@@ -82,10 +82,23 @@ const Library = (function () {
     }
     newCard.querySelector(".id").textContent = bookObj.id;
     books.append(newCard);
+    bookList.push(bookObj);
   };
 
   myModule.removeBook = function (id) {
-    console.log(books.querySelector(".id"));
+    let newBookList = bookList.slice(0, id).concat(bookList.slice(id + 1));
+
+    let searchList = books.querySelectorAll(".card");
+    for (let i = 0; i < searchList.length; i++) {
+      let book = searchList[i].querySelector(".id");
+      if (book.textContent === id) {
+        console.log(book.textContent + " found");
+        console.log(searchList);
+        let card = book.closest(".card");
+        card.parentNode.removeChild(card);
+      }
+    }
+    return newBookList;
   };
 
   myModule.getLength = function () {
@@ -103,12 +116,17 @@ function handleChangeStatus(e) {
     e.target.closest(".status").querySelector(".dot").classList.toggle("read");
     return;
   }
-  if (e.target.closest("div > .test2")) {
+  if (e.target.closest("div > .remove")) {
     console.log("deleted");
+    // select card user clicks remove on
+    let test = e.target.closest(".card");
+    // get ID of said card
+    let id = test.querySelector(".id").textContent;
+    Library.removeBook(id);
     return;
   }
 
-  if (e.target.closest("div > .test1")) {
+  if (e.target.closest("div > .edit")) {
     console.log("edit");
     // toss info into popup form and allow edits?
     return;

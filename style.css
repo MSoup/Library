@@ -54,15 +54,6 @@ input:hover {
   display: inline-block;
 }
 
-.title-container {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  align-items: center;
-  border: solid;
-  margin: 5px;
-}
-
 form {
   display: inline-block;
   align-items: center;
@@ -95,6 +86,10 @@ input {
 .message-box {
   height: 1.1em;
   text-align: center;
+}
+
+p.message-box {
+  color: white;
 }
 
 .selection-container {
@@ -178,6 +173,10 @@ img {
 }
 
 .hidden {
+  display: none;
+}
+
+.card.hidden {
   display: none;
 }
 
@@ -296,4 +295,74 @@ body > .container {
   h1 {
     margin-bottom: 5px;
   }
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid;
+}
+
+.navbar > h2,
+.dropbtn > h2 {
+  margin: 20px;
+  color: white;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown {
+  float: right;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+  background-color: #ac3b61;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
