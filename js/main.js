@@ -1,6 +1,11 @@
-// Book constructor
-function Book(title, author, pages, read, id) {
-  return { title, author, pages, read, id };
+class Book {
+  constructor(title, author, pages, read, id) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.id = id;
+  }
 }
 
 // query selectors
@@ -72,7 +77,6 @@ const Library = (function () {
   myModule.addBook = function (bookObj) {
     // make DOM object from bookObj
     let newCard = card.cloneNode(true);
-    newCard.classList.remove("hidden");
     // modify title, author, pages, read, id
     newCard.querySelector(".title").textContent = bookObj.title;
     newCard.querySelector(".author").textContent = bookObj.author;
@@ -83,6 +87,7 @@ const Library = (function () {
     newCard.querySelector(".id").textContent = bookObj.id;
     books.append(newCard);
     bookList.push(bookObj);
+    newCard.classList.remove("hidden");
   };
 
   myModule.removeBook = function (id) {
@@ -111,34 +116,34 @@ const Library = (function () {
   return myModule; // returns the Object with public methods
 })();
 
-function handleChangeStatus(e) {
-  if (e.target.closest(".status")) {
-    e.target.closest(".status").querySelector(".dot").classList.toggle("read");
+function handleChangeStatus({ target }) {
+  if (target.closest(".status")) {
+    target.closest(".status").querySelector(".dot").classList.toggle("read");
     return;
   }
-  if (e.target.closest("div > .remove")) {
+  if (target.closest("div > .remove")) {
     console.log("deleted");
     // select card user clicks remove on
-    let test = e.target.closest(".card");
+    let test = target.closest(".card");
     // get ID of said card
     let id = test.querySelector(".id").textContent;
     Library.removeBook(id);
     return;
   }
 
-  if (e.target.closest("div > .edit")) {
+  if (target.closest("div > .edit")) {
     console.log("edit");
     // toss info into popup form and allow edits?
     return;
   }
 
-  if (e.target.closest("div > .test")) {
+  if (target.closest("div > .test")) {
     console.log("clone");
     // toss info into popup form and allow edits?
     return;
   }
 
-  if (e.target.closest(".pic-container> img")) {
+  if (target.closest(".pic-container > img")) {
     console.log("edit image");
     return;
   }
