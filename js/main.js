@@ -67,7 +67,7 @@ function clearForm() {
   document.getElementById("pages").value = "";
 }
 
-// factory function Library -> lets me call addBook and removeBook as of now
+// ******factory function Library -> lets me call addBook and removeBook as of now****
 const Library = (function () {
   let myModule = {};
   // books is a nodeList, bookList is a list
@@ -75,35 +75,26 @@ const Library = (function () {
   let bookList = [];
   // methods
   myModule.addBook = function (bookObj) {
-    // make DOM object from bookObj
-    let newCard = card.cloneNode(true);
-    // modify title, author, pages, read, id
-    newCard.querySelector(".title").textContent = bookObj.title;
-    newCard.querySelector(".author").textContent = bookObj.author;
-    newCard.querySelector(".pages").textContent = bookObj.pages;
-    if (bookObj.read) {
-      newCard.querySelector(".dot").classList.add("read");
-    }
-    newCard.querySelector(".id").textContent = bookObj.id;
-    books.append(newCard);
     bookList.push(bookObj);
-    newCard.classList.remove("hidden");
+    this.displayBooks();
+    // eventually need to remove class to the card, dont forget
   };
 
   myModule.removeBook = function (id) {
-    let newBookList = bookList.slice(0, id).concat(bookList.slice(id + 1));
+    bookList = bookList.slice(0, id).concat(bookList.slice(id + 1));
 
-    let searchList = books.querySelectorAll(".card");
-    for (let i = 0; i < searchList.length; i++) {
-      let book = searchList[i].querySelector(".id");
-      if (book.textContent === id) {
-        console.log(book.textContent + " found");
-        console.log(searchList);
-        let card = book.closest(".card");
-        card.parentNode.removeChild(card);
-      }
-    }
-    return newBookList;
+    // let searchList = books.querySelectorAll(".card");
+    // for (let i = 0; i < searchList.length; i++) {
+    //   let book = searchList[i].querySelector(".id");
+    //   if (book.textContent === id) {
+    //     console.log(book.textContent + " found");
+    //     console.log(searchList);
+    //     let card = book.closest(".card");
+    //     card.parentNode.removeChild(card);
+    //   }
+    // }
+    this.displayBooks();
+    return;
   };
 
   myModule.getLength = function () {
@@ -111,7 +102,30 @@ const Library = (function () {
   };
 
   myModule.displayBooks = function () {
-    return console.log(books);
+    while (books.children.length > 1) {
+      books.removeChild(books.children[1]);
+    }
+
+    // iterate through book objects and create cards
+
+    for (let i = 0; i < bookList.length; i++) {
+      let bookObj = bookList[i];
+
+      let newCard = card.cloneNode(true);
+      // modify title, author, pages, read, id
+      newCard.querySelector(".title").textContent = bookObj.title;
+      newCard.querySelector(".author").textContent = bookObj.author;
+      newCard.querySelector(".pages").textContent = bookObj.pages;
+      if (bookObj.read) {
+        newCard.querySelector(".dot").classList.add("read");
+      }
+      newCard.querySelector(".id").textContent = i + 1;
+
+      books.append(newCard);
+      newCard.classList.remove("hidden");
+    }
+
+    return;
   };
   return myModule; // returns the Object with public methods
 })();
@@ -123,11 +137,9 @@ function handleChangeStatus({ target }) {
   }
   if (target.closest("div > .remove")) {
     console.log("deleted");
-    // select card user clicks remove on
-    let test = target.closest(".card");
-    // get ID of said card
-    let id = test.querySelector(".id").textContent;
-    Library.removeBook(id);
+    let findCardId = target.closest(".card").querySelector(".id").textContent;
+    Library.removeBook(findCardId);
+
     return;
   }
 
