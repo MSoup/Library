@@ -1,5 +1,5 @@
 class Book {
-  constructor(title, author, pages, read, id) {
+  constructor(title, author, pages, read, id = 0) {
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -21,6 +21,10 @@ const statusBox = document.querySelector(".status");
 form.addEventListener("click", submitHandler);
 libraryDisplayContainer.addEventListener("click", handleChangeStatus);
 
+// global state triggers
+let isEditMode = false;
+let editToken;
+
 function submitHandler(event) {
   if (!event.target.className.includes("button")) {
     return;
@@ -30,7 +34,6 @@ function submitHandler(event) {
   let author = document.getElementById("author").value;
   let pages = document.getElementById("pages").value;
   let read = document.getElementById("read").checked;
-  let id = Library.getLength();
 
   // validate
   if (!author) {
@@ -44,12 +47,21 @@ function submitHandler(event) {
     return;
   }
 
+  let book = new Book(title, author, pages, read);
+
+  // if edit mode, instead of appending to nodelist, remove book at selected index and add new book there
+  if (isEditMode) {
+    console.log("can edit in theory");
+    isEditMode = false;
+    Library.editBook(editToken, book);
+    clearForm();
+    return;
+  }
+
   // bundle form -> append to nodelist
-  let book = new Book(title, author, pages, read, id);
   Library.addBook(book);
 
   displayMessage("Added: " + book.title);
-  // clearForm();
 }
 
 function displayMessage(msg, err = false) {
@@ -73,53 +85,49 @@ const Library = (function () {
   // books is a nodeList, bookList is a list
   let books = libraryDisplayContainer;
   let bookList = [];
-  // methods
+
+  // addBook -> accepts bookObj and pushes to list, then calls displayBooks
   myModule.addBook = function (bookObj) {
     bookList.push(bookObj);
     this.displayBooks();
     // eventually need to remove class to the card, dont forget
+    return;
   };
 
+  // removeBook -> accepts id (index of book in list), removes it from list, calls displayBooks
   myModule.removeBook = function (id) {
-    bookList = bookList.slice(0, id).concat(bookList.slice(id + 1));
-
-    // let searchList = books.querySelectorAll(".card");
-    // for (let i = 0; i < searchList.length; i++) {
-    //   let book = searchList[i].querySelector(".id");
-    //   if (book.textContent === id) {
-    //     console.log(book.textContent + " found");
-    //     console.log(searchList);
-    //     let card = book.closest(".card");
-    //     card.parentNode.removeChild(card);
-    //   }
-    // }
+    bookList.splice(id, 1);
+    // bookList = bookList.slice(0, id).concat(bookList.slice(id + 1));
     this.displayBooks();
     return;
   };
 
-  myModule.getLength = function () {
-    return books.querySelectorAll(".id").length;
+  myModule.editBook = function (id, bookObj) {
+    bookList.splice(id, 1, bookObj);
+    this.displayBooks();
+    return;
   };
 
+  // render books into DOM
   myModule.displayBooks = function () {
+    // remove childnodes except the hidden template card
     while (books.children.length > 1) {
       books.removeChild(books.children[1]);
     }
 
     // iterate through book objects and create cards
-
     for (let i = 0; i < bookList.length; i++) {
       let bookObj = bookList[i];
 
       let newCard = card.cloneNode(true);
-      // modify title, author, pages, read, id
+      // modify title, author, pages, read
       newCard.querySelector(".title").textContent = bookObj.title;
       newCard.querySelector(".author").textContent = bookObj.author;
       newCard.querySelector(".pages").textContent = bookObj.pages;
       if (bookObj.read) {
         newCard.querySelector(".dot").classList.add("read");
       }
-      newCard.querySelector(".id").textContent = i + 1;
+      newCard.querySelector(".id").textContent = i;
 
       books.append(newCard);
       newCard.classList.remove("hidden");
@@ -136,16 +144,30 @@ function handleChangeStatus({ target }) {
     return;
   }
   if (target.closest("div > .remove")) {
-    console.log("deleted");
     let findCardId = target.closest(".card").querySelector(".id").textContent;
+    console.log(findCardId);
+
     Library.removeBook(findCardId);
 
     return;
   }
 
   if (target.closest("div > .edit")) {
+    // toggle edit mode
+    isEditMode = true;
+    editToken = target.closest(".card").querySelector(".id").textContent;
     console.log("edit");
-    // toss info into popup form and allow edits?
+    document.getElementById("title").value = target
+      .closest(".card")
+      .querySelector(".title").textContent;
+    document.getElementById("author").value = target
+      .closest(".card")
+      .querySelector(".author").textContent;
+    document.getElementById("pages").value = target
+      .closest(".card")
+      .querySelector(".pages").textContent;
+
+    document.getElementById("title").focus();
     return;
   }
 
