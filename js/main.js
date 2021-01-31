@@ -17,18 +17,27 @@ const libraryDisplayContainer = document.querySelector(
 const card = document.querySelector(".card");
 const statusBox = document.querySelector(".status");
 
+const instructionsModal = document.getElementById("myModal");
+
 // event listeners
-form.addEventListener("click", submitHandler);
+form.addEventListener("click", handleSubmitForm);
 libraryDisplayContainer.addEventListener("click", handleChangeStatus);
+// menu selection
+document
+  .querySelector(".dropdown-content")
+  .addEventListener("click", handleMenuClick, false);
 
 // global state triggers
-let isEditMode = false;
 let editToken;
 
-function submitHandler(event) {
+function handleSubmitForm(event) {
   if (!event.target.className.includes("button")) {
     return;
   }
+
+  let isEditMode = document
+    .querySelector(".form")
+    .classList.contains("edit-mode");
 
   let title = document.getElementById("title").value;
   let author = document.getElementById("author").value;
@@ -52,7 +61,7 @@ function submitHandler(event) {
   // if edit mode, instead of appending to nodelist, remove book at selected index and add new book there
   if (isEditMode) {
     console.log("can edit in theory");
-    isEditMode = false;
+    document.querySelector(".form").classList.toggle("edit-mode");
     Library.editBook(editToken, book);
     clearForm();
     return;
@@ -66,7 +75,7 @@ function submitHandler(event) {
 
 function displayMessage(msg, err = false) {
   if (err) {
-    messageBox.style.color = "red";
+    messageBox.style.color = "white";
   } else {
     messageBox.style.color = "black";
   }
@@ -97,7 +106,6 @@ const Library = (function () {
   // removeBook -> accepts id (index of book in list), removes it from list, calls displayBooks
   myModule.removeBook = function (id) {
     bookList.splice(id, 1);
-    // bookList = bookList.slice(0, id).concat(bookList.slice(id + 1));
     this.displayBooks();
     return;
   };
@@ -108,6 +116,11 @@ const Library = (function () {
     return;
   };
 
+  myModule.cloneBook = function (id) {
+    bookList.splice(id, 0, bookList[id]);
+    this.displayBooks();
+    return;
+  };
   // render books into DOM
   myModule.displayBooks = function () {
     // remove childnodes except the hidden template card
@@ -139,10 +152,12 @@ const Library = (function () {
 })();
 
 function handleChangeStatus({ target }) {
+  // toggle read circle
   if (target.closest(".status")) {
     target.closest(".status").querySelector(".dot").classList.toggle("read");
     return;
   }
+  // toggle remove card button
   if (target.closest("div > .remove")) {
     let findCardId = target.closest(".card").querySelector(".id").textContent;
     console.log(findCardId);
@@ -152,9 +167,10 @@ function handleChangeStatus({ target }) {
     return;
   }
 
+  // toggle edit card button
   if (target.closest("div > .edit")) {
     // toggle edit mode
-    isEditMode = true;
+    document.querySelector(".form").classList.toggle("edit-mode");
     editToken = target.closest(".card").querySelector(".id").textContent;
     console.log("edit");
     document.getElementById("title").value = target
@@ -171,9 +187,10 @@ function handleChangeStatus({ target }) {
     return;
   }
 
-  if (target.closest("div > .test")) {
-    console.log("clone");
-    // toss info into popup form and allow edits?
+  if (target.closest("div > .clone")) {
+    let findCardId = target.closest(".card").querySelector(".id").textContent;
+
+    Library.cloneBook(findCardId);
     return;
   }
 
@@ -188,3 +205,46 @@ function handleChangeStatus({ target }) {
 libraryDisplayContainer.querySelector(".card").classList.add("hidden");
 
 // intro message
+// TODO
+
+// save to local storage?
+// TODO
+
+function handleMenuClick(event) {
+  event.preventDefault();
+  let clicked = event.target.className;
+  if (clicked === "usage") {
+    // do stuff
+    console.log(event.target.className);
+    displayInstructions();
+  } else if (clicked === "local-storage") {
+    // do more stuff
+  } else if (clicked === "firebase") {
+    // do more stuff
+  }
+}
+
+function displayInstructions() {
+  instructionsModal.classList.toggle("display");
+}
+
+let closeButton = document.querySelector("span.close");
+
+closeButton.onclick = function () {
+  displayInstructions();
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == instructionsModal) {
+    displayInstructions();
+  }
+};
+
+// get text to display in instructions modal
+let instructionsText = fetch("/Library/instructions.txt")
+  .then((response) => response.text())
+  .then(
+    (textString) =>
+      (document.querySelector("#instructions").textContent = textString)
+  );

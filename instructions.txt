@@ -1,0 +1,15 @@
+Welcome to my Library App
+
+Usage:
+Enter book details and press enter to add a book.
+
+Edit, remove, or clone books at the bottom right of the book cards.
+
+Local storage allows you to save your stored books locally.
+
+Firebase allows you to save your stored books on the cloud.
+
+If you have any questions, feel free to contact me at davenlu1989@gmail.com
+
+:)
+
