@@ -1,3 +1,6 @@
+import Library from "./library.js";
+import firebase from "firebase/app";
+
 class Book {
   constructor(title, author, pages, read, id = 0) {
     this.title = title;
@@ -10,12 +13,9 @@ class Book {
 
 // query selectors
 const form = document.querySelector(".form");
-const messageBox = document.querySelector(".message-box");
 const libraryDisplayContainer = document.querySelector(
   ".library-display-container"
 );
-const card = document.querySelector(".card");
-const statusBox = document.querySelector(".status");
 
 const instructionsModal = document.getElementById("myModal");
 
@@ -26,9 +26,6 @@ libraryDisplayContainer.addEventListener("click", handleChangeStatus);
 document
   .querySelector(".dropdown-content")
   .addEventListener("click", handleMenuClick, false);
-
-// global state triggers
-let editToken;
 
 function handleSubmitForm(event) {
   if (!event.target.className.includes("button")) {
@@ -52,7 +49,7 @@ function handleSubmitForm(event) {
     pages = "? pages";
   }
   if (!title) {
-    displayMessage("Error: must include title", true);
+    Library.displayMessage("Must include title", true);
     return;
   }
 
@@ -60,26 +57,16 @@ function handleSubmitForm(event) {
 
   // if edit mode, instead of appending to nodelist, remove book at selected index and add new book there
   if (isEditMode) {
-    console.log("can edit in theory");
-    document.querySelector(".form").classList.toggle("edit-mode");
-    Library.editBook(editToken, book);
+    let form = document.querySelector(".form");
+    form.classList.toggle("edit-mode");
+    Library.editBook(form.getAttribute("edit-token"), book);
+    form.removeAttribute("edit-token");
     clearForm();
     return;
   }
 
   // bundle form -> append to nodelist
   Library.addBook(book);
-
-  displayMessage("Added: " + book.title);
-}
-
-function displayMessage(msg, err = false) {
-  if (err) {
-    messageBox.style.color = "white";
-  } else {
-    messageBox.style.color = "black";
-  }
-  messageBox.textContent = msg;
 }
 
 function clearForm() {
@@ -87,69 +74,6 @@ function clearForm() {
   document.getElementById("author").value = "";
   document.getElementById("pages").value = "";
 }
-
-// ******factory function Library -> lets me call addBook and removeBook as of now****
-const Library = (function () {
-  let myModule = {};
-  // books is a nodeList, bookList is a list
-  let books = libraryDisplayContainer;
-  let bookList = [];
-
-  // addBook -> accepts bookObj and pushes to list, then calls displayBooks
-  myModule.addBook = function (bookObj) {
-    bookList.push(bookObj);
-    this.displayBooks();
-    // eventually need to remove class to the card, dont forget
-    return;
-  };
-
-  // removeBook -> accepts id (index of book in list), removes it from list, calls displayBooks
-  myModule.removeBook = function (id) {
-    bookList.splice(id, 1);
-    this.displayBooks();
-    return;
-  };
-
-  myModule.editBook = function (id, bookObj) {
-    bookList.splice(id, 1, bookObj);
-    this.displayBooks();
-    return;
-  };
-
-  myModule.cloneBook = function (id) {
-    bookList.splice(id, 0, bookList[id]);
-    this.displayBooks();
-    return;
-  };
-  // render books into DOM
-  myModule.displayBooks = function () {
-    // remove childnodes except the hidden template card
-    while (books.children.length > 1) {
-      books.removeChild(books.children[1]);
-    }
-
-    // iterate through book objects and create cards
-    for (let i = 0; i < bookList.length; i++) {
-      let bookObj = bookList[i];
-
-      let newCard = card.cloneNode(true);
-      // modify title, author, pages, read
-      newCard.querySelector(".title").textContent = bookObj.title;
-      newCard.querySelector(".author").textContent = bookObj.author;
-      newCard.querySelector(".pages").textContent = bookObj.pages;
-      if (bookObj.read) {
-        newCard.querySelector(".dot").classList.add("read");
-      }
-      newCard.querySelector(".id").textContent = i;
-
-      books.append(newCard);
-      newCard.classList.remove("hidden");
-    }
-
-    return;
-  };
-  return myModule; // returns the Object with public methods
-})();
 
 function handleChangeStatus({ target }) {
   // toggle read circle
@@ -160,7 +84,6 @@ function handleChangeStatus({ target }) {
   // toggle remove card button
   if (target.closest("div > .remove")) {
     let findCardId = target.closest(".card").querySelector(".id").textContent;
-    console.log(findCardId);
 
     Library.removeBook(findCardId);
 
@@ -170,9 +93,11 @@ function handleChangeStatus({ target }) {
   // toggle edit card button
   if (target.closest("div > .edit")) {
     // toggle edit mode
+    Library.displayMessage("Edit Mode");
+
     document.querySelector(".form").classList.toggle("edit-mode");
-    editToken = target.closest(".card").querySelector(".id").textContent;
-    console.log("edit");
+    let editToken = target.closest(".card").querySelector(".id").textContent;
+    document.querySelector(".form").setAttribute("edit-token", editToken);
     document.getElementById("title").value = target
       .closest(".card")
       .querySelector(".title").textContent;
@@ -195,33 +120,30 @@ function handleChangeStatus({ target }) {
   }
 
   if (target.closest(".pic-container > img")) {
-    console.log("edit image");
+    console.log("edit image not yet implemented");
     return;
   }
 }
 
-// hide first card
-
 libraryDisplayContainer.querySelector(".card").classList.add("hidden");
-
-// intro message
-// TODO
-
-// save to local storage?
-// TODO
 
 function handleMenuClick(event) {
   event.preventDefault();
   let clicked = event.target.className;
   if (clicked === "usage") {
-    // do stuff
+    // display instructions
     console.log(event.target.className);
     displayInstructions();
-  } else if (clicked === "local-storage") {
+  } else if (clicked === "local-save") {
+    Library.saveBooks();
+  } else if (clicked === "local-load") {
+    Library.loadBooks();
+  } else if (clicked === "firebase-save") {
     // do more stuff
-  } else if (clicked === "firebase") {
+  } else if (clicked === "firebase-load") {
     // do more stuff
   }
+  return;
 }
 
 function displayInstructions() {
