@@ -8,6 +8,11 @@ A basic CRUD app that utilizes firebase and local storage to store book informat
 - Works with firebase
 - Edit, clone, delete, add books
 
+## Acknowledgements
+
+- localStorage [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+- Firebase [Google Docs](https://firebase.google.com/docs/database)
+
 ## In the works (future updates)
 
 - pull images from google image search / google books API
