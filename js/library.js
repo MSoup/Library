@@ -43,6 +43,7 @@ const Library = (function () {
     objList.forEach((obj) => bookList.push(obj));
     this.displayBooks();
     this.displayMessage("Loaded from local storage");
+    document.getElementById("title").focus();
   };
 
   myModule.saveBooksCloud = function () {
@@ -60,6 +61,7 @@ const Library = (function () {
         this.clear();
         result.val().forEach((book) => bookList.push(book));
         this.displayBooks();
+        document.getElementById("title").focus();
       });
 
     this.displayMessage("Loaded from cloud storage");
