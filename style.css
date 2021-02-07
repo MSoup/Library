@@ -91,7 +91,6 @@ input {
   height: 1.1em;
   text-align: center;
   position: relative;
-  overflow: hidden;
 }
 
 p.message-box {
