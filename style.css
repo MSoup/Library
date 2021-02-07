@@ -137,9 +137,6 @@ img {
   align-self: center;
 }
 
-img {
-}
-
 .pic-container {
   display: flex;
   flex-direction: column;
