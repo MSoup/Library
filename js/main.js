@@ -18,7 +18,13 @@ const libraryDisplayContainer = document.querySelector(
 const instructionsModal = document.getElementById("myModal");
 
 // event listeners
-form.addEventListener("click", handleSubmitForm);
+form.addEventListener("keyup", function (event) {
+  if (event.key == "Enter") {
+    console.log("enter detected");
+    handleSubmitForm(event.key);
+  }
+});
+
 libraryDisplayContainer.addEventListener("click", handleChangeStatus);
 libraryDisplayContainer.querySelector(".card").classList.add("hidden");
 
@@ -27,11 +33,7 @@ document
   .querySelector(".dropdown-content")
   .addEventListener("click", handleMenuClick, false);
 
-function handleSubmitForm(event) {
-  if (!event.target.className.includes("button")) {
-    return;
-  }
-
+function handleSubmitForm() {
   let isEditMode = document
     .querySelector(".form")
     .classList.contains("edit-mode");
