@@ -1,15 +1,21 @@
+const firebaseConfig = {
+  apiKey: "AIzaSyCHnPHqYB7-VS5eRb8fdq2rg58nIqn4Q-Q",
+  authDomain: "library-app-302200.firebaseapp.com",
+  projectId: "library-app-302200",
+  storageBucket: "library-app-302200.appspot.com",
+  messagingSenderId: "886149518701",
+  appId: "1:886149518701:web:df316f355b7a7bd0b93664",
+  measurementId: "G-ZED6N1KLFK",
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 const libraryDisplayContainer = document.querySelector(
   ".library-display-container"
 );
 const messageBox = document.querySelector(".message-box");
 const card = document.querySelector(".card");
-
-const test = function () {
-  const card = "hello";
-  console.log("test: ", card);
-};
-
-console.log(test(), card);
 
 // ******factory function Library
 const Library = (function () {
@@ -26,18 +32,37 @@ const Library = (function () {
     }
   };
 
-  myModule.saveBooks = function () {
-    console.log("Saved: ", JSON.stringify(bookList));
+  myModule.saveBooksLocal = function () {
     window.localStorage.setItem("books", JSON.stringify(bookList));
     this.displayMessage("Saved to local storage");
   };
 
-  myModule.loadBooks = function () {
+  myModule.loadBooksLocal = function () {
     let objList = JSON.parse(window.localStorage.getItem("books"));
     this.clear();
     objList.forEach((obj) => bookList.push(obj));
     this.displayBooks();
     this.displayMessage("Loaded from local storage");
+  };
+
+  myModule.saveBooksCloud = function () {
+    let books = firebase.database().ref("books");
+    books.set(bookList);
+    this.displayMessage("Saved to cloud storage");
+  };
+
+  myModule.loadBooksCloud = function () {
+    firebase
+      .database()
+      .ref("books")
+      .once("value")
+      .then((result) => {
+        this.clear();
+        result.val().forEach((book) => bookList.push(book));
+        this.displayBooks();
+      });
+
+    this.displayMessage("Loaded from cloud storage");
   };
 
   myModule.clear = () => {
@@ -61,6 +86,13 @@ const Library = (function () {
     return;
   };
 
+  myModule.toggleRead = function (id, isRead) {
+    if (isRead) {
+      bookList[id].read = true;
+    } else {
+      bookList[id].read = false;
+    }
+  };
   myModule.editBook = function (id, bookObj) {
     this.displayMessage("Edited: " + JSON.stringify(bookList[id].title));
 

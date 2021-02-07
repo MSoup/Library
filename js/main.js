@@ -1,5 +1,4 @@
 import Library from "./library.js";
-import firebase from "firebase/app";
 
 class Book {
   constructor(title, author, pages, read, id = 0) {
@@ -22,6 +21,8 @@ const instructionsModal = document.getElementById("myModal");
 // event listeners
 form.addEventListener("click", handleSubmitForm);
 libraryDisplayContainer.addEventListener("click", handleChangeStatus);
+libraryDisplayContainer.querySelector(".card").classList.add("hidden");
+
 // menu selection
 document
   .querySelector(".dropdown-content")
@@ -77,16 +78,16 @@ function clearForm() {
 
 function handleChangeStatus({ target }) {
   // toggle read circle
+  let findCardId = target.closest(".card").querySelector(".id").textContent;
   if (target.closest(".status")) {
-    target.closest(".status").querySelector(".dot").classList.toggle("read");
+    let isReadButton = target.closest(".status").querySelector(".dot");
+    isReadButton.classList.toggle("read");
+    Library.toggleRead(findCardId, isReadButton.classList.contains("read"));
     return;
   }
   // toggle remove card button
   if (target.closest("div > .remove")) {
-    let findCardId = target.closest(".card").querySelector(".id").textContent;
-
     Library.removeBook(findCardId);
-
     return;
   }
 
@@ -96,8 +97,7 @@ function handleChangeStatus({ target }) {
     Library.displayMessage("Edit Mode");
 
     document.querySelector(".form").classList.toggle("edit-mode");
-    let editToken = target.closest(".card").querySelector(".id").textContent;
-    document.querySelector(".form").setAttribute("edit-token", editToken);
+    document.querySelector(".form").setAttribute("edit-token", findCardId);
     document.getElementById("title").value = target
       .closest(".card")
       .querySelector(".title").textContent;
@@ -125,23 +125,20 @@ function handleChangeStatus({ target }) {
   }
 }
 
-libraryDisplayContainer.querySelector(".card").classList.add("hidden");
-
 function handleMenuClick(event) {
   event.preventDefault();
   let clicked = event.target.className;
   if (clicked === "usage") {
     // display instructions
-    console.log(event.target.className);
     displayInstructions();
   } else if (clicked === "local-save") {
-    Library.saveBooks();
+    Library.saveBooksLocal();
   } else if (clicked === "local-load") {
-    Library.loadBooks();
+    Library.loadBooksLocal();
   } else if (clicked === "firebase-save") {
-    // do more stuff
+    Library.saveBooksCloud();
   } else if (clicked === "firebase-load") {
-    // do more stuff
+    Library.loadBooksCloud();
   }
   return;
 }
