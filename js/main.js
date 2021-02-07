@@ -10,7 +10,6 @@ class Book {
   }
 }
 
-// query selectors
 const form = document.querySelector(".form");
 const libraryDisplayContainer = document.querySelector(
   ".library-display-container"
@@ -23,7 +22,7 @@ form.addEventListener("click", handleSubmitForm);
 libraryDisplayContainer.addEventListener("click", handleChangeStatus);
 libraryDisplayContainer.querySelector(".card").classList.add("hidden");
 
-// menu selection
+// menu dropdown
 document
   .querySelector(".dropdown-content")
   .addEventListener("click", handleMenuClick, false);
@@ -42,7 +41,7 @@ function handleSubmitForm(event) {
   let pages = document.getElementById("pages").value;
   let read = document.getElementById("read").checked;
 
-  // validate
+  // simple validation
   if (!author) {
     author = "author unknown";
   }
@@ -54,9 +53,10 @@ function handleSubmitForm(event) {
     return;
   }
 
+  // validation passes, create book object
   let book = new Book(title, author, pages, read);
 
-  // if edit mode, instead of appending to nodelist, remove book at selected index and add new book there
+  // if editMode replace book[index] with edited book
   if (isEditMode) {
     let form = document.querySelector(".form");
     form.classList.toggle("edit-mode");
@@ -66,7 +66,7 @@ function handleSubmitForm(event) {
     return;
   }
 
-  // bundle form -> append to nodelist
+  // else append to nodelist
   Library.addBook(book);
 }
 
@@ -77,7 +77,7 @@ function clearForm() {
 }
 
 function handleChangeStatus({ target }) {
-  // toggle read circle
+  // toggle read notification circle
   let findCardId = target.closest(".card").querySelector(".id").textContent;
   if (target.closest(".status")) {
     let isReadButton = target.closest(".status").querySelector(".dot");
@@ -85,6 +85,7 @@ function handleChangeStatus({ target }) {
     Library.toggleRead(findCardId, isReadButton.classList.contains("read"));
     return;
   }
+
   // toggle remove card button
   if (target.closest("div > .remove")) {
     Library.removeBook(findCardId);
@@ -95,18 +96,17 @@ function handleChangeStatus({ target }) {
   if (target.closest("div > .edit")) {
     // toggle edit mode
     Library.displayMessage("Edit Mode");
+    let formElement = document.querySelector(".form");
+    formElement.classList.toggle("edit-mode");
+    formElement.setAttribute("edit-token", findCardId);
 
-    document.querySelector(".form").classList.toggle("edit-mode");
-    document.querySelector(".form").setAttribute("edit-token", findCardId);
-    document.getElementById("title").value = target
-      .closest(".card")
-      .querySelector(".title").textContent;
-    document.getElementById("author").value = target
-      .closest(".card")
-      .querySelector(".author").textContent;
-    document.getElementById("pages").value = target
-      .closest(".card")
-      .querySelector(".pages").textContent;
+    let updateFields = ["title", "author", "pages"];
+
+    for (let i = 0; i < updateFields.length; i++) {
+      document.getElementById(updateFields[i]).value = target
+        .closest(".card")
+        .querySelector("." + updateFields[i]).textContent;
+    }
 
     document.getElementById("title").focus();
     return;
@@ -147,9 +147,8 @@ function displayInstructions() {
   instructionsModal.classList.toggle("display");
 }
 
-let closeButton = document.querySelector("span.close");
-
-closeButton.onclick = function () {
+// close instructions window
+document.querySelector("span.close").onclick = function () {
   displayInstructions();
 };
 

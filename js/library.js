@@ -8,7 +8,6 @@ const firebaseConfig = {
   measurementId: "G-ZED6N1KLFK",
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 const libraryDisplayContainer = document.querySelector(
@@ -17,10 +16,10 @@ const libraryDisplayContainer = document.querySelector(
 const messageBox = document.querySelector(".message-box");
 const card = document.querySelector(".card");
 
-// ******factory function Library
+// factory function Library
 const Library = (function () {
   let myModule = {};
-  // books is a nodeList, bookList is a list
+  // books -> nodeList, bookList -> list
   let books = libraryDisplayContainer;
   let bookList = [];
 
@@ -137,7 +136,7 @@ const Library = (function () {
 
     return;
   };
-  return myModule; // returns the Object with public methods
+  return myModule;
 })();
 
 export default Library;
