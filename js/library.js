@@ -10,6 +10,14 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+let isSignedIn = "";
+
+firebase.auth().onAuthStateChanged((user) => {
+  isSignedIn = user ? user.uid : "";
+});
+
+const provider = new firebase.auth.GoogleAuthProvider();
+
 const libraryDisplayContainer = document.querySelector(
   ".library-display-container"
 );
@@ -46,23 +54,63 @@ const Library = (function () {
   };
 
   myModule.saveBooksCloud = function () {
-    let books = firebase.database().ref("books");
-    books.set(bookList);
-    this.displayMessage("Saved to cloud storage");
+    // **
+
+    if (!isSignedIn) {
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          // The signed-in user info.
+          const user = result.user.uid;
+          // add book array to cloud
+          firebase.database().ref(user).set(bookList);
+          this.displayMessage("Saved to cloud storage");
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          var errorCode = error.code;
+          this.displayMessage("Error code " + errorCode, true);
+        });
+    } else {
+      let userId = isSignedIn;
+      firebase.database().ref(userId).set(bookList);
+      this.displayMessage("Logged in already: saved to cloud storage");
+    }
+
+    // **
   };
 
   myModule.loadBooksCloud = function () {
-    firebase
-      .database()
-      .ref("books")
-      .once("value")
-      .then((result) => {
-        this.clear();
-        result.val().forEach((book) => bookList.push(book));
-        this.displayBooks();
-        document.getElementById("title").focus();
-      });
-
+    if (isSignedIn) {
+      firebase
+        .database()
+        .ref(isSignedIn)
+        .once("value")
+        .then((result) => {
+          this.clear();
+          result.val().forEach((book) => bookList.push(book));
+          this.displayBooks();
+          document.getElementById("title").focus();
+        });
+    } else {
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          isSignedIn = result.user.uid;
+          firebase
+            .database()
+            .ref(isSignedIn)
+            .once("value")
+            .then((result) => {
+              this.clear();
+              result.val().forEach((book) => bookList.push(book));
+              this.displayBooks();
+              document.getElementById("title").focus();
+            });
+        });
+    }
     this.displayMessage("Loaded from cloud storage");
   };
 
