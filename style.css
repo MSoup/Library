@@ -28,7 +28,8 @@ p {
   color: #123c69;
 }
 
-.cat-photo {
+.cat-photo,
+.user-photo {
   position: absolute;
   right: 0px;
   top: 110px;

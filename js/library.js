@@ -9,11 +9,16 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 let isSignedIn = "";
 
 firebase.auth().onAuthStateChanged((user) => {
   isSignedIn = user ? user.uid : "";
+  if (isSignedIn) {
+    console.log(user.photoURL);
+    document.querySelector(".cat-photo").setAttribute("src", user.photoURL);
+  }
 });
 
 const provider = new firebase.auth.GoogleAuthProvider();
