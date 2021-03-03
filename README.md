@@ -20,3 +20,6 @@ A basic CRUD app that utilizes firebase and local storage to store book informat
 - allow for searching books
 - allow generation of book collection into a hash to share with others
 - import books by hash code
+
+## To learn
+- compression methods (to import books by hash)
