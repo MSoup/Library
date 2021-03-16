@@ -1,6 +1,9 @@
 # Library
 A basic CRUD app that utilizes firebase and local storage to store book information
 -----
+## Demo
+[Demo](https://msoup.github.io/Library/)
+
 ## Features
 
 - tech stack: HTML, CSS, JS, Firebase realtime database, local storage API
