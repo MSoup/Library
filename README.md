@@ -2,7 +2,7 @@
 A basic CRUD app that utilizes firebase and local storage to store book information
 -----
 ## Demo
-[Demo](https://msoup.github.io/Library/)
+Demo can be found [here](https://msoup.github.io/Library/)
 
 ## Features
 
